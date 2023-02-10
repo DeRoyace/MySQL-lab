@@ -1,0 +1,205 @@
+Creating new table nad its headings/schemas:
+
+CREATE TABLE Users (
+    id INT PRIMARY KEY AUTO_INCREMENT, 
+    email VARCHAR(255) NOT NULL UNIQUE,
+    bio TEXT,
+    phone VARCHAR(10)
+);
+
+INT - datatype assigned for id
+PRIMARY KEY - the contstraint 'PRIMARY KEY' is added, to make the id column unique i.e, unique number for each row of ID column.
+AUTO_INCREMENT - tells the database to automatically create the id, i.e, incrementing id number as we add data.
+VARCHAR(value) - used for string datas; it takes argument of a number that represents max length of string.
+NOT NULL - this makes the email field must to contain data for every row, i.e, email is required for every data-entry in rows.
+UNIQUE - this contstraint strictly makes the email field of all row unique, i.e different email-ids for each rows.
+TEXT - makes the field to store string value of unspecified size. Generally, used for large text data entry.
+
+[NOTE: These contstraints are kind of extra layer of data validation that can add beyond just the datatype.]
+
+Inserting new records in table User:
+
+INSERT INTO User (email, bio, phone)
+VALUES (
+    'example@xyz.com',
+    'Full Stack Java developer, currently working at Oracle as Senior Software Engineer.',
+    '0123456789'
+);
+
+            OR
+            
+INSERT INTO User (email, bio, phone)
+VALUES ('ninja.help@ntech.com', 'Competitive programmer', '9099341'),
+       ('webx.help@wbt.in', 'Web developer', '1234567'),
+       ('mxs.enquiry@snkeys.org', 'PC Components and Accessories', '888888');
+
+
+Retrieving data from the database of a specific table:
+
+    SELECT - this helps us to read data from database, outputing in a tabular form;
+
+    Syntax:
+        SELECT * FROM User; -- shows the entire table
+
++----+------------------------+-------------------------------+----------+
+| id | email                  | bio                           | phone    |
++----+------------------------+-------------------------------+----------+
+|  2 | help@codex.org         | Software developer org        | 18009876 |
+|  3 | ninja.help@ntech.com   | Competitive programmer        | 9099341  |
+|  4 | webx.help@wbt.in       | Web developer                 | 1234567  |
+|  5 | mxs.enquiry@snkeys.org | PC Components and Accessories | 888888   |
++----+------------------------+-------------------------------+----------+
+4 rows in set (0.00 sec)
+
+    Column & row wise display:
+        SELECT email, id FROM User; -- shows only email and id column fields.
++------------------------+----+
+| email                  | id |
++------------------------+----+
+| help@codex.org         |  2 |
+| mxs.enquiry@snkeys.org |  5 |
+| ninja.help@ntech.com   |  3 |
+| webx.help@wbt.in       |  4 |
++------------------------+----+
+4 rows in set (0.00 sec)
+
+        SELECT id, phone FROM User LIMIT 3; -- only 3 rows will be displayed.
++----+----------+
+| id | phone    |
++----+----------+
+|  2 | 18009876 |
+|  3 | 9099341  |
+|  4 | 1234567  |
++----+----------+
+
+    Display in order w.r.t ID:
+        SELECT id, email, phone FROM User
+        ORDER BY id ASC
+        LIMIT 2;
+    [ ASC - ascending, DESC - descending ]
+
+mysql> SELECT id, email, phone FROM User ORDER BY id DESC LIMIT 3;
++----+------------------------+---------+
+| id | email                  | phone   |
++----+------------------------+---------+
+|  5 | mxs.enquiry@snkeys.org | 888888  |
+|  4 | webx.help@wbt.in       | 1234567 |
+|  3 | ninja.help@ntech.com   | 9099341 |
++----+------------------------+---------+
+3 rows in set (0.02 sec)
+
+
+    Filtering with WHERE attribute:
+
+    WHERE phone = '0123456789'
+        :- will display only those rows whose phone no is same as stated above.
+        
+mysql> SELECT id, email, phone FROM User WHERE phone = '888888';
++----+------------------------+--------+
+| id | email                  | phone  |
++----+------------------------+--------+
+|  5 | mxs.enquiry@snkeys.org | 888888 |
++----+------------------------+--------+
+1 row in set (0.02 sec)
+
+
+    Adding more conditions using AND, OR :
+        AND id > 1
+        OR id > 1
+        
+mysql> SELECT id, email, phone FROM User WHERE phone = '888888' AND id < 5;
+Empty set (0.00 sec)
+
+mysql> SELECT id, email, phone FROM User WHERE phone = '888888' AND id > 2;
++----+------------------------+--------+
+| id | email                  | phone  |
++----+------------------------+--------+
+|  5 | mxs.enquiry@snkeys.org | 888888 |
++----+------------------------+--------+
+1 row in set (0.01 sec)
+        
+mysql> SELECT id, email, phone FROM User WHERE phone = '888888' OR id > 2;
++----+------------------------+---------+
+| id | email                  | phone   |
++----+------------------------+---------+
+|  3 | ninja.help@ntech.com   | 9099341 |
+|  4 | webx.help@wbt.in       | 1234567 |
+|  5 | mxs.enquiry@snkeys.org | 888888  |
++----+------------------------+---------+
+3 rows in set (0.00 sec)
+
+
+Using LIKE for pattern matching or datas starting with a character:
+        email LIKE 'n%' 
+        [shows only those eamils starting with letter 'e']
+        email LIKE '%g'
+        [display emails ending with alphabet 'g']
+        
+mysql> SELECT id, email, phone FROM User WHERE email LIKE 'n%';
++----+----------------------+---------+
+| id | email                | phone   |
++----+----------------------+---------+
+|  3 | ninja.help@ntech.com | 9099341 |
++----+----------------------+---------+
+1 row in set (0.00 sec)
+
+mysql> SELECT id, email, phone FROM User WHERE email LIKE '%g';
++----+------------------------+----------+
+| id | email                  | phone    |
++----+------------------------+----------+
+|  2 | help@codex.org         | 18009876 |
+|  5 | mxs.enquiry@snkeys.org | 888888   |
++----+------------------------+----------+
+2 rows in set (0.01 sec)
+
+
+Searching a specific string at any position of the field:
+
+mysql> SELECT * FROM User WHERE bio LIKE '%developer%';
++----+------------------+------------------------+----------+
+| id | email            | bio                    | phone    |
++----+------------------+------------------------+----------+
+|  2 | help@codex.org   | Software developer org | 18009876 |
+|  4 | webx.help@wbt.in | Web developer          | 1234567  |
++----+------------------+------------------------+----------+
+2 rows in set (0.00 sec)
+
+
+Searching a string that starts with 'p' and ends with 's' :
+
+mysql> SELECT * FROM User WHERE bio LIKE 'p%s';
++----+------------------------+-------------------------------+--------+
+| id | email                  | bio                           | phone  |
++----+------------------------+-------------------------------+--------+
+|  5 | mxs.enquiry@snkeys.org | PC Components and Accessories | 888888 |
++----+------------------------+-------------------------------+--------+
+1 row in set (0.00 sec)
+
+Finds email ids that has character 'e' at its second position:
+mysql> SELECT * FROM User WHERE email LIKE '_e%';
++----+------------------+------------------------+----------+
+| id | email            | bio                    | phone    |
++----+------------------+------------------------+----------+
+|  2 | help@codex.org   | Software developer org | 18009876 |
+|  4 | webx.help@wbt.in | Web developer          | 1234567  |
++----+------------------+------------------------+----------+
+2 rows in set (0.01 sec)
+
+Finding email-id that has character 'x' at its 4th position:
+mysql> SELECT * FROM User WHERE email LIKE '___x%';
++----+------------------+---------------+---------+
+| id | email            | bio           | phone   |
++----+------------------+---------------+---------+
+|  4 | webx.help@wbt.in | Web developer | 1234567 |
++----+------------------+---------------+---------+
+1 row in set (0.00 sec)
+
+
+INDEX attribute is basically a lookup table for specific columns, that helps us to retrieve data via keywords. Database INDEX can relate with INDEX page at the back of our book that keeps records of important keywords arranged in alphabetical order alongwith page numbers so that we can find our desired topic or keyword in the book without looking at all the pages in the book. Similary, an INDEX table in a database, it retrieves data without scanning the entire database. But this may cause and addition cost of extra memory space and slower writes.
+
+    CREATE INDEX email_index ON User(email);
+    -- an index is made for User table for its email column
+
+---------------------------------------------------------------------------------
+		  RELATIONAL DATA 
+
