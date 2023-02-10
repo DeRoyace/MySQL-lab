@@ -1,0 +1,72 @@
+-------------------------------------------------------------------------------
+                        MySQL setup - Linux environment
+-------------------------------------------------------------------------------
+
+Link - https://www.youtube.com/playlist?list=PLzw86JJoCbUsincqu9JPlSSKnCAwO7-pR
+
+**Terminal commands for MySQL installation and setup:
+
+1) Install MySQL: 
+    sudo apt install mysql-server
+
+2) To run secure script (IMPORTANT):
+    sudo mysql_secure_installation
+
+3) To start MySQL now:
+    sudo systemctl enable --now mysql.service
+
+4) To check is MySQL is running: 
+    systemctl is-active mysql
+                OR
+    systemctl status mysql.service  (**precise details check)
+
+5) To allow MySQL through firewall:
+    sudo ufw enable
+    sudo ufw allow mysql
+    
+6) Install MySQL Workbench:
+    sudo snap install mysql-workbench-community
+
+7) Setup MySQL workbench to connect to database:
+
+    STEP-1:
+        Open terminal and execute this commands:
+            sudo snap connect mysql-workbench-community:password-manager-service
+            sudo snap connect mysql-workbench-community:ssh-keys
+    
+    STEP-2:
+        ~ Open MySQL-workbench.
+        ~ Setup your conncetion by simply add or open connecetion.
+        ~ Give conncetion name, username and password.
+        ~ Test your connection.
+        ~ Open conncetion.
+    
+***********************************************************************************************************
+
+To setup root password:
+
+    STEP 1: Open mysql console
+                sudo mysql
+            
+    STEP 2: Enter this command with your new password in place of <your_new_password> :
+                ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_new_password';
+                
+Now everytime you open MySQL you need to give passcode.
+
+To open MySQL console as root user with password: mysql -u root -p
+
+***********************************************************************************************************
+
+MySQL basic console commands and their usage:
+
+            COMMANDS                        USED FOR
+
+show databases;                     to show all the databases you have
+
+create database InfoBase;           to create a new database
+
+delete database InfoBase;           to delete a database
+
+system clear OR, < CTRL + L >       to clear MySQL console
+
+exit OR quit                        to terminate MySQL console
