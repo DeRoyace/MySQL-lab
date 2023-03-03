@@ -1,0 +1,96 @@
+CREATE TABLE Product ( prod_id INT(3) PRIMARY KEY, prod_name VARCHAR(10), unit_price INT(4), discount FLOAT(2) );
+
+// Display Table Structure:
+
+mysql> SHOW COLUMNS FROM Product;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| prod_id    | int         | NO   | PRI | NULL    |       |
+| prod_name  | varchar(10) | YES  |     | NULL    |       |
+| unit_price | int         | YES  |     | NULL    |       |
+| discount   | float       | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+
+
+INSERT INTO Product VALUES (104, 'KEYBOARD', 2500, 5.2);
+INSERT INTO Product VALUES (105, 'MOUSE', 800, 5.5);
+INSERT INTO Product VALUES (106, 'HEADPHONE', 2000, 7.5);
+INSERT INTO Product VALUES (107, 'SPEAKER', 5300, 10.5);
+INSERT INTO Product VALUES (108, 'MOUSE PAD', 600, 3.4);
+
+mysql> SELECT * FROM Product;
++---------+-----------+------------+----------+
+| prod_id | prod_name | unit_price | discount |
++---------+-----------+------------+----------+
+|     104 | KEYBOARD  |       2500 |      5.2 |
+|     106 | HEADPHONE |       2000 |      7.5 |
+|     107 | SPEAKER   |       5300 |     10.5 |
+|     108 | MOUSE PAD |        600 |      3.4 |
++---------+-----------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Product ORDER BY discount DESC;
++---------+-----------+------------+----------+
+| prod_id | prod_name | unit_price | discount |
++---------+-----------+------------+----------+
+|     107 | SPEAKER   |       5300 |     10.5 |
+|     106 | HEADPHONE |       2000 |      7.5 |
+|     104 | KEYBOARD  |       2500 |      5.2 |
+|     108 | MOUSE PAD |        600 |      3.4 |
++---------+-----------+------------+----------+
+4 rows in set (0.00 sec)
+
+
+mysql> SELECT * FROM Product ORDER BY 3;
++---------+-----------+------------+----------+
+| prod_id | prod_name | unit_price | discount |
++---------+-----------+------------+----------+
+|     108 | MOUSE PAD |        600 |      3.4 |
+|     106 | HEADPHONE |       2000 |      7.5 |
+|     104 | KEYBOARD  |       2500 |      5.2 |
+|     107 | SPEAKER   |       5300 |     10.5 |
++---------+-----------+------------+----------+
+4 rows in set (0.00 sec)
+
+
+Using WHERE:
+
+Display product details whose price is either 1K or 2K.
+
+mysql> SELECT * FROM Product WHERE unit_price in (1000, 2000);
++---------+-----------+------------+----------+
+| prod_id | prod_name | unit_price | discount |
++---------+-----------+------------+----------+
+|     106 | HEADPHONE |       2000 |      7.5 |
++---------+-----------+------------+----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Product WHERE unit_price in (2500, 2000);
++---------+-----------+------------+----------+
+| prod_id | prod_name | unit_price | discount |
++---------+-----------+------------+----------+
+|     104 | KEYBOARD  |       2500 |      5.2 |
+|     106 | HEADPHONE |       2000 |      7.5 |
++---------+-----------+------------+----------+
+
+mysql> SELECT * FROM Product WHERE unit_price between 500 and 3000;
++---------+-----------+------------+----------+
+| prod_id | prod_name | unit_price | discount |
++---------+-----------+------------+----------+
+|     104 | KEYBOARD  |       2500 |      5.2 |
+|     106 | HEADPHONE |       2000 |      7.5 |
+|     108 | MOUSE PAD |        600 |      3.4 |
++---------+-----------+------------+----------+
+
+
+## Display details of those products whose name has letter at 2nd position:
+
+mysql> SELECT * FROM Product where prod_name like '_E%';
++---------+-----------+------------+----------+
+| prod_id | prod_name | unit_price | discount |
++---------+-----------+------------+----------+
+|     104 | KEYBOARD  |       2500 |      5.2 |
+|     106 | HEADPHONE |       1999 |      7.5 |
++---------+-----------+------------+----------+
+2 rows in set (0.00 sec)
